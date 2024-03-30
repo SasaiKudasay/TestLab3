@@ -5,5 +5,7 @@ export const diagnose = (symptoms) => {
         return 'Грипп';
     } else if (symptoms.includes('Зуд в глазах') && symptoms.includes('Чихание') && symptoms.includes('Заложенность носа') && symptoms.includes('Боли в теле')) {
         return 'Аллергия';
+    } else {
+        return 'Неизвестный';
     }
 };
