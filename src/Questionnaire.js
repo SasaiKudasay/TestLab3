@@ -22,6 +22,7 @@ class Questionnaire extends Component {
     render() {
         return (
             <div>
+                <p>Вопрос:</p>
                 <p>{this.questions[this.state.currentQuestion - 1]}</p>
                 <button onClick={this.handleAnswer}>Next</button>
             </div>
