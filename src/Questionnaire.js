@@ -158,14 +158,12 @@ class Questionnaire extends Component {
                         ))}
                     </div>
                 )}
-                {this.state.currentQuestion !== 1 && (
-                    <NextButton active="false" onClick={() => {
-                        console.log(this.state.activeAnswers)
-                        this.setState({ currentQuestion: this.state.currentQuestion + 1 })}
-                    }>
-                        Следующий
-                    </NextButton>
-                )}
+                <NextButton active="false" onClick={() => {
+                    console.log(this.state.activeAnswers)
+                    this.setState({ currentQuestion: this.state.currentQuestion + 1 })}
+                }>
+                    Следующий
+                </NextButton>
             </div>
         );
     }

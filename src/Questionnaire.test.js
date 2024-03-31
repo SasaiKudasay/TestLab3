@@ -23,6 +23,25 @@ test('Обновляет состояние ответа при нажатии �
 
   await new Promise(resolve => setTimeout(resolve, 0));
 
-  expect(answerButton1).toHaveAttribute('aria-pressed', false);
+  expect(answerButton1).toHaveAttribute('aria-pressed', "false");
+});
+
+test('Выбор симптома на втором вопросе', async () => {
+  render(<Questionnaire />);
+
+  // Кликнуть на кнопку "Следующий"
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+
+  // Подождать немного, чтобы обновились данные после клика
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  // Кликнуть на первый симптом
+  fireEvent.click(screen.getByText('Насморк'));
+
+  // Подождать немного, чтобы обновились данные после клика
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  // Проверить, что симптом был выбран
+  expect(screen.getByText('Насморк')).toHaveAttribute('aria-pressed', 'true');
 });
 
