@@ -45,3 +45,22 @@ test('Выбор симптома на втором вопросе', async () =>
   expect(screen.getByText('Насморк')).toHaveAttribute('aria-pressed', 'true');
 });
 
+test('Выбор симптома на третьем вопросе', async () => {
+  render(<Questionnaire />);
+
+  // Кликнуть на кнопку "Следующий" дважды, чтобы перейти ко второму вопросу
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+
+  // Подождать немного, чтобы обновились данные после клика
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  // Кликнуть на первый симптом
+  fireEvent.click(screen.getByText('Боли в спине'));
+
+  // Подождать немного, чтобы обновились данные после клика
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  // Проверить, что симптом был выбран
+  expect(screen.getByText('Боли в спине')).toHaveAttribute('aria-pressed', 'true');
+});

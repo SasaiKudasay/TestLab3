@@ -101,6 +101,22 @@ class Questionnaire extends Component {
         'Повышенная температура'
     ];
 
+    answerTypes_3 = [
+        'Боли в спине',
+        'Боли в теле',
+        'Болит голова',
+        'Боли в ногах',
+        'Боли в руках'
+    ];
+
+    answerTypes_4 = [
+        'Примерно день',
+        'Около недели',
+        'Больше недели',
+        'Около месяца',
+        'Больше месяца'
+    ];
+
     handleAnswer = (type, quest) => {
         this.setState((prevState) => {
             const { activeAnswers } = prevState;
@@ -119,7 +135,7 @@ class Questionnaire extends Component {
                 };
             }
         });
-        if (quest === 1)
+        if (quest === 1 || quest === 4)
         {
             this.setState({ currentQuestion: this.state.currentQuestion + 1 })
         }
@@ -128,14 +144,14 @@ class Questionnaire extends Component {
     render() {
         return (
             <div>
-                <p>Вопрос:</p>
+                {this.state.currentQuestion > 0 && this.state.currentQuestion < 5 && (
+                <p>Вопрос:</p>)}
                 <p>{this.questions[this.state.currentQuestion - 1]}</p>
                 {this.state.currentQuestion === 1 && (
                     <div>
                         {this.answerTypes_1.map((type) => (
                             <ButtonToggle
                                 key={type}
-                                active={"false"}
                                 onClick={() => this.handleAnswer(type, 1)}
                                 aria-pressed={this.state.activeAnswers.includes(type) ? "true" : "false"}
                             >
@@ -151,6 +167,33 @@ class Questionnaire extends Component {
                                 key={type}
                                 active={this.state.activeAnswers.includes(type) ? +true : +false}
                                 onClick={() => this.handleAnswer(type, 2)}
+                                aria-pressed={this.state.activeAnswers.includes(type) ? "true" : "false"}
+                            >
+                                {type}
+                            </ButtonToggle>
+                        ))}
+                    </div>
+                )}
+                {this.state.currentQuestion === 3 && (
+                    <div>
+                        {this.answerTypes_3.map((type) => (
+                            <ButtonToggle
+                                key={type}
+                                active={this.state.activeAnswers.includes(type) ? +true : +false}
+                                onClick={() => this.handleAnswer(type, 3)}
+                                aria-pressed={this.state.activeAnswers.includes(type) ? "true" : "false"}
+                            >
+                                {type}
+                            </ButtonToggle>
+                        ))}
+                    </div>
+                )}
+                {this.state.currentQuestion === 4 && (
+                    <div>
+                        {this.answerTypes_4.map((type) => (
+                            <ButtonToggle
+                                key={type}
+                                onClick={() => this.handleAnswer(type, 4)}
                                 aria-pressed={this.state.activeAnswers.includes(type) ? "true" : "false"}
                             >
                                 {type}
