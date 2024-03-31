@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
+import {diagnose} from "./Diagnosis";
 
 const theme = {
     blue: {
@@ -78,6 +79,7 @@ class Questionnaire extends Component {
             answer: null,
             currentQuestion: 1,
             activeAnswers: [], // Массив выбранных ответов
+            duration: "",
             name: "",
             dob: "",
         };
@@ -126,23 +128,27 @@ class Questionnaire extends Component {
     ];
 
     handleAnswer = (type, quest) => {
-        this.setState((prevState) => {
-            const { activeAnswers } = prevState;
-            const index = activeAnswers.indexOf(type);
-            if (index === -1) {
-                // Если ответ не выбран, добавляем его в массив
-                return {
-                    activeAnswers: [...activeAnswers, type],
-                };
-            } else {
-                // Если ответ уже выбран, удаляем его из массива
-                const newActiveAnswers = [...activeAnswers];
-                newActiveAnswers.splice(index, 1);
-                return {
-                    activeAnswers: newActiveAnswers,
-                };
-            }
-        });
+        if (quest !== 4) {
+            this.setState((prevState) => {
+                const { activeAnswers } = prevState;
+                const index = activeAnswers.indexOf(type);
+                if (index === -1) {
+                    // Если ответ не выбран, добавляем его в массив
+                    return {
+                        activeAnswers: [...activeAnswers, type],
+                    };
+                } else {
+                    // Если ответ уже выбран, удаляем его из массива
+                    const newActiveAnswers = [...activeAnswers];
+                    newActiveAnswers.splice(index, 1);
+                    return {
+                        activeAnswers: newActiveAnswers,
+                    };
+                }
+            });
+        } else {
+            this.setState({ duration: type });
+        }
         if (quest === 1 || quest === 4)
         {
             this.setState({ currentQuestion: this.state.currentQuestion + 1 })
@@ -235,14 +241,15 @@ class Questionnaire extends Component {
                         />
                     </div>
                 )}
+                {this.state.currentQuestion > 0 && this.state.currentQuestion < 6 && (
                 <NextButton active="false" onClick={() => {
-                    console.log(this.state.activeAnswers);
-                    console.log("Name:", this.state.name);
-                    console.log("Date of Birth:", this.state.dob);
                     this.setState({ currentQuestion: this.state.currentQuestion + 1 })}
                 }>
                     Следующий
-                </NextButton>
+                </NextButton>)}
+                {this.state.currentQuestion === 6 && (
+                    <p>{diagnose(this.state.activeAnswers, this.state.duration)}</p>
+                )}
             </div>
         );
     }
