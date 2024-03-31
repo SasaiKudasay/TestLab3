@@ -80,6 +80,7 @@ class Questionnaire extends Component {
         'Как ты себя сегодня чувствуешь?',
         'Испытывали ли вы какие-либо симптомы?',
         'В какой части тела болит?',
+        'Как долго вы уже болеете?'
     ];
 
     answerTypes_1 = [
@@ -88,7 +89,19 @@ class Questionnaire extends Component {
         'Ужасное состояние'
     ];
 
-    handleAnswer = (type) => {
+    answerTypes_2 = [
+        'Насморк',
+        'Чихание',
+        'Кашель',
+        'Лихорадка',
+        'Усталость',
+        'Зуд в глазах',
+        'Заложенность носа',
+        'Тошнота',
+        'Повышенная температура'
+    ];
+
+    handleAnswer = (type, quest) => {
         this.setState((prevState) => {
             const { activeAnswers } = prevState;
             const index = activeAnswers.indexOf(type);
@@ -106,6 +119,10 @@ class Questionnaire extends Component {
                 };
             }
         });
+        if (quest === 1)
+        {
+            this.setState({ currentQuestion: this.state.currentQuestion + 1 })
+        }
     };
 
     render() {
@@ -118,18 +135,37 @@ class Questionnaire extends Component {
                         {this.answerTypes_1.map((type) => (
                             <ButtonToggle
                                 key={type}
-                                active={this.state.activeAnswers.includes(type)} // Проверка наличия ответа в массиве
-                                onClick={() => this.handleAnswer(type)}
-                                aria-pressed={this.state.activeAnswers.includes(type).toString()} // Преобразование в строку для aria-pressed
+                                active={"false"}
+                                onClick={() => this.handleAnswer(type, 1)}
+                                aria-pressed={this.state.activeAnswers.includes(type) ? "true" : "false"}
                             >
                                 {type}
                             </ButtonToggle>
                         ))}
                     </div>
                 )}
-                <NextButton onClick={() => this.setState({ currentQuestion: this.state.currentQuestion + 1 })}>
-                    Следующий
-                </NextButton>
+                {this.state.currentQuestion === 2 && (
+                    <div>
+                        {this.answerTypes_2.map((type) => (
+                            <ButtonToggle
+                                key={type}
+                                active={this.state.activeAnswers.includes(type) ? +true : +false}
+                                onClick={() => this.handleAnswer(type, 2)}
+                                aria-pressed={this.state.activeAnswers.includes(type) ? "true" : "false"}
+                            >
+                                {type}
+                            </ButtonToggle>
+                        ))}
+                    </div>
+                )}
+                {this.state.currentQuestion !== 1 && (
+                    <NextButton active="false" onClick={() => {
+                        console.log(this.state.activeAnswers)
+                        this.setState({ currentQuestion: this.state.currentQuestion + 1 })}
+                    }>
+                        Следующий
+                    </NextButton>
+                )}
             </div>
         );
     }
