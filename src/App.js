@@ -6,7 +6,6 @@ function App() {
     <div className="App">
       <h1>Электронный терапевт</h1>
         <Questionnaire/>
-
     </div>
   );
 }
