@@ -248,7 +248,11 @@ class Questionnaire extends Component {
                     Следующий
                 </NextButton>)}
                 {this.state.currentQuestion === 6 && (
-                    <p>{diagnose(this.state.activeAnswers, this.state.duration)}</p>
+                    <div>
+                        <p>ФИО: {this.state.name}</p>
+                        <p>Дата рождения: {this.state.dob}</p>
+                        <p>Ваш диагноз: {diagnose(this.state.activeAnswers, this.state.duration)}</p>
+                    </div>
                 )}
             </div>
         );
