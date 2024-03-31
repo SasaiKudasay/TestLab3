@@ -66,6 +66,11 @@ const ButtonToggle = styled(Button)`
   opacity: ${(props) => (props.active ? "1" : "0.7")};
 `;
 
+const LineEdit = styled.input`
+  margin-top: 10px;
+  padding: 5px;
+`;
+
 class Questionnaire extends Component {
     constructor(props) {
         super(props);
@@ -73,6 +78,8 @@ class Questionnaire extends Component {
             answer: null,
             currentQuestion: 1,
             activeAnswers: [], // Массив выбранных ответов
+            name: "",
+            dob: "",
         };
     }
 
@@ -80,7 +87,8 @@ class Questionnaire extends Component {
         'Как ты себя сегодня чувствуешь?',
         'Испытывали ли вы какие-либо симптомы?',
         'В какой части тела болит?',
-        'Как долго вы уже болеете?'
+        'Как долго вы уже болеете?',
+        'Введите свои ФИО и дату рождения',
     ];
 
     answerTypes_1 = [
@@ -141,11 +149,19 @@ class Questionnaire extends Component {
         }
     };
 
+    handleInputChange = (event) => {
+        const { name, value } = event.target;
+        this.setState({
+            [name]: value,
+        });
+    };
+
     render() {
         return (
             <div>
                 {this.state.currentQuestion > 0 && this.state.currentQuestion < 5 && (
-                <p>Вопрос:</p>)}
+                    <p>Вопрос:</p>
+                )}
                 <p>{this.questions[this.state.currentQuestion - 1]}</p>
                 {this.state.currentQuestion === 1 && (
                     <div>
@@ -201,8 +217,28 @@ class Questionnaire extends Component {
                         ))}
                     </div>
                 )}
+                {this.state.currentQuestion === 5 && (
+                    <div>
+                        <LineEdit
+                            type="text"
+                            name="name"
+                            value={this.state.name}
+                            onChange={this.handleInputChange}
+                            placeholder="Введите ваше ФИО"
+                        />
+                        <LineEdit
+                            type="text"
+                            name="dob"
+                            value={this.state.dob}
+                            onChange={this.handleInputChange}
+                            placeholder="Введите вашу дату рождения"
+                        />
+                    </div>
+                )}
                 <NextButton active="false" onClick={() => {
-                    console.log(this.state.activeAnswers)
+                    console.log(this.state.activeAnswers);
+                    console.log("Name:", this.state.name);
+                    console.log("Date of Birth:", this.state.dob);
                     this.setState({ currentQuestion: this.state.currentQuestion + 1 })}
                 }>
                     Следующий

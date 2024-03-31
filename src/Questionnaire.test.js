@@ -64,3 +64,35 @@ test('Выбор симптома на третьем вопросе', async () 
   // Проверить, что симптом был выбран
   expect(screen.getByText('Боли в спине')).toHaveAttribute('aria-pressed', 'true');
 });
+
+test('ввод ФИО обновляет состояние', () => {
+  render(<Questionnaire />);
+
+  // Кликнуть на кнопку "Следующий" дважды, чтобы перейти ко второму вопросу
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+
+  const nameInput = screen.getByPlaceholderText('Введите ваше ФИО');
+
+  fireEvent.change(nameInput, { target: { value: 'Иванов Иван Иванович' } });
+
+  expect(nameInput).toHaveValue('Иванов Иван Иванович');
+});
+
+test('ввод даты рождения обновляет состояние', () => {
+  render(<Questionnaire />);
+
+  // Кликнуть на кнопку "Следующий" дважды, чтобы перейти ко второму вопросу
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+  fireEvent.click(screen.getByText('Следующий', { selector: 'button' }));
+
+  const dobInput = screen.getByPlaceholderText('Введите вашу дату рождения');
+
+  fireEvent.change(dobInput, { target: { value: '01.01.1990' } });
+
+  expect(dobInput).toHaveValue('01.01.1990');
+});
